@@ -1,7 +1,5 @@
-name: Public news check
+name: Manual public news check
 on:
-  schedule:
-    - cron: '2-57/5 * * * *'
   workflow_dispatch:
 permissions:
   contents: read
