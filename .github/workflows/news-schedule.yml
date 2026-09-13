@@ -1,0 +1,23 @@
+name: Scheduled public news check
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: news-collector
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Fetch and deliver public news metadata
+        env:
+          DESK_URL: ${{ secrets.DESK_URL }}
+          SITES_TOKEN: ${{ secrets.SITES_TOKEN }}
+          NEWS_SIGNING_SECRET: ${{ secrets.NEWS_SIGNING_SECRET }}
+        run: python3 collector.py
